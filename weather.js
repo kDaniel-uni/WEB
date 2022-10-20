@@ -11,7 +11,16 @@ document.getElementById("butt").addEventListener('click', () => {
             throw new Error("Bad name");
         }
         mavariable = JSON.stringify(json);
-        document.getElementById('data').innerHTML = `<p>test${mavariable}</p>`
+        myChart.data.labels = [];
+        myChart.data.datasets[0].data = [];
+        //document.getElementById('data').innerHTML = `<p>test${mavariable}</p>`
+        let day_0_array = json["fcst_day_0"]["hourly_data"];
+        let day_0_keys = Object.keys(day_0_array);
+        day_0_keys.forEach(element => {
+            myChart.data.labels.push(element);
+            myChart.data.datasets[0].data.push(day_0_array[element]["TMP2m"]);
+        });
+        myChart.update();
     })
     .catch( (err) => {
         document.getElementById('data').innerHTML = `<p>Mauvais nom de ville</p>`
@@ -50,7 +59,7 @@ const myChart = new Chart(ctx, {
                     borderColor: 'white'
                 },
                 ticks: {
-                    display : false
+                    display : true
                 }
             }
         }
